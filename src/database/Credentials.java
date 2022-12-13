@@ -10,6 +10,14 @@ public final class Credentials {
     public Credentials() {
     }
 
+    public Credentials(Credentials duplicate) {
+        name = duplicate.getName();
+        password = duplicate.getPassword();
+        accountType = duplicate.getAccountType();
+        country = duplicate.getCountry();
+        balance = duplicate.getBalance();
+    }
+
     public String getAccountType() {
         return accountType;
     }

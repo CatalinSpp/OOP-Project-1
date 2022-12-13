@@ -1,5 +1,7 @@
 package database;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 
 public class User {
@@ -10,7 +12,7 @@ public class User {
     private ArrayList<Movie> watchedMovies;
     private ArrayList<Movie> likedMovies;
     private ArrayList<Movie> ratedMovies;
-
+    private ArrayList<Movie> moviesAvailableInHisCountry;
     public User() {
         tokensCount = 0;
         numFreePremiumMovies = 15;
@@ -18,6 +20,18 @@ public class User {
         watchedMovies = new ArrayList<>();
         likedMovies = new ArrayList<>();
         ratedMovies = new ArrayList<>();
+        moviesAvailableInHisCountry = new ArrayList<>();
+    }
+
+    public User(User duplicate) {
+        credentials = new Credentials(duplicate.getCredentials());
+        tokensCount = duplicate.getTokensCount();
+        numFreePremiumMovies = duplicate.getNumFreePremiumMovies();
+        purchasedMovies = new ArrayList<>(duplicate.getPurchasedMovies());
+        watchedMovies = new ArrayList<>(duplicate.getWatchedMovies());
+        likedMovies = new ArrayList<>(duplicate.getLikedMovies());
+        ratedMovies = new ArrayList<>(duplicate.getRatedMovies());
+        moviesAvailableInHisCountry = new ArrayList<>();
     }
 
     public final Credentials getCredentials() {
@@ -74,5 +88,15 @@ public class User {
 
     public void setRatedMovies(ArrayList<Movie> ratedMovies) {
         this.ratedMovies = ratedMovies;
+    }
+
+    @JsonIgnore
+    public ArrayList<Movie> getMoviesAvailableInHisCountry() {
+        return moviesAvailableInHisCountry;
+    }
+
+    @JsonIgnore
+    public void setMoviesAvailableInHisCountry(ArrayList<Movie> moviesAvailableInHisCountry) {
+        this.moviesAvailableInHisCountry = moviesAvailableInHisCountry;
     }
 }

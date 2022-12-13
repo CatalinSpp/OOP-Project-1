@@ -16,9 +16,6 @@ public class Main {
     public static void main(String[] args) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         Database database = objectMapper.readValue(new File(args[0]), Database.class);
-        User loggedUser = null;
-        ArrayList<Movie> displayedMovieList = new ArrayList<>();
-        Page livePage = PageLogout.getInstance();
 
         ArrayNode out = objectMapper.createArrayNode();
 
@@ -27,71 +24,100 @@ public class Main {
         error.putPOJO("currentMoviesList", new ArrayList<>());
         error.putPOJO("currentUser", null);
 
+        ObjectNode valid = objectMapper.createObjectNode();
+        valid.putPOJO("error", null);
+        valid.putPOJO("currentMoviesList", null);
+        valid.putPOJO("currentUser", null);
+
         for (Action action: database.getActions()) {
             if (action.getType().equals("change page")) {
                 if (action.getPage().equals("login")
-                        && livePage.equals(PageLogout.getInstance())) {
-                    livePage = PageLogin.getInstance();
-                    livePage.navigateToHere();
+                        && database.getLivePage().equals(PageLogout.getInstance())) {
+                    database.setLivePage(PageLogin.getInstance());
+                    database.getLivePage().navigateToHere(database);
                 } else if (action.getPage().equals("register")
-                        && livePage.equals(PageLogout.getInstance())) {
-                    livePage = PageRegister.getInstance();
-                    livePage.navigateToHere();
-                } else if (action.getPage().equals("logout")) {
-                    livePage = PageLogout.getInstance();
-                    livePage.navigateToHere();
+                        && database.getLivePage().equals(PageLogout.getInstance())) {
+                    database.setLivePage(PageRegister.getInstance());
+                    database.getLivePage().navigateToHere(database);
+                } else if (action.getPage().equals("logout")
+                        && !database.getLivePage().equals(PageLogin.getInstance())
+                        && !database.getLivePage().equals(PageRegister.getInstance())
+                        && !database.getLivePage().equals(PageLogout.getInstance())) {
+                    database.setLivePage(PageLogout.getInstance());
+                    database.getLivePage().navigateToHere(database);
                 } else if (action.getPage().equals("movies")
-                        && (livePage.equals(Homepage.getInstance())
-                        || livePage.equals(PageMovies.getInstance())
-                        || livePage.equals(PageSeeDetails.getInstance())
-                        || livePage.equals(PageUpgrades.getInstance()))) {
-                    livePage = PageMovies.getInstance();
-                    livePage.navigateToHere();
+                        && (database.getLivePage().equals(Homepage.getInstance())
+                        || database.getLivePage().equals(PageMovies.getInstance())
+                        || database.getLivePage().equals(PageSeeDetails.getInstance())
+                        || database.getLivePage().equals(PageUpgrades.getInstance()))) {
+                    database.setLivePage(PageMovies.getInstance());
+                    database.getLivePage().navigateToHere(database);
+                    valid.putPOJO("currentMoviesList",
+                            new ArrayList<>(database.getDisplayedMovieList()));
+                    valid.putPOJO("currentUser", new User(database.getLoggedUser()));
+                    out.add(valid);
                 } else if (action.getPage().equals("see details")
-                        && (livePage.equals(PageMovies.getInstance())
-                        || livePage.equals(PageSeeDetails.getInstance()) )) {
-                    livePage = PageSeeDetails.getInstance();
-                    livePage.navigateToHere();
+                        && (database.getLivePage().equals(PageMovies.getInstance())
+                        || database.getLivePage().equals(PageSeeDetails.getInstance()) )) {
+                    boolean movieFound = false;
+                    for (Movie movie : database.getDisplayedMovieList()) {
+                        if (movie.getName().equals(action.getMovie())) {
+                            database.getDisplayedMovieList().clear();
+                            database.getDisplayedMovieList().add(movie);
+                            movieFound = true;
+                            break;
+                        }
+                    }
+                    if (!movieFound) {
+                        out.add(error);
+                    } else {
+                        database.setLivePage(PageSeeDetails.getInstance());
+                        database.getLivePage().navigateToHere(database);
+                        valid.putPOJO("currentMoviesList",
+                                new ArrayList<>(database.getDisplayedMovieList()));
+                        valid.putPOJO("currentUser", new User(database.getLoggedUser()));
+                        out.add(valid);
+                    }
                 } else if (action.getPage().equals("upgrades")
-                        && (livePage.equals(Homepage.getInstance())
-                        || livePage.equals(PageMovies.getInstance())
-                        || livePage.equals(PageSeeDetails.getInstance())
-                        || livePage.equals(PageUpgrades.getInstance()))) {
-                    livePage = PageUpgrades.getInstance();
-                    livePage.navigateToHere();
+                        && (database.getLivePage().equals(Homepage.getInstance())
+                        || database.getLivePage().equals(PageMovies.getInstance())
+                        || database.getLivePage().equals(PageSeeDetails.getInstance())
+                        || database.getLivePage().equals(PageUpgrades.getInstance()))) {
+                    database.setLivePage(PageUpgrades.getInstance());
+                    database.getLivePage().navigateToHere(database);
                 } else {
                     out.add(error);
                 }
             } else {
                 if (action.getFeature().equals("login")
-                        && livePage.equals(PageLogin.getInstance())) {
-                    //PageLogin.getInstance().login();
+                        && database.getLivePage().equals(PageLogin.getInstance())) {
+                    PageLogin.getInstance().login(database, action, out);
                 } else if (action.getFeature().equals("register")
-                        && livePage.equals(PageRegister.getInstance())) {
-                    //PageRegister.getInstance().register();
+                        && database.getLivePage().equals(PageRegister.getInstance())) {
+                    PageRegister.getInstance().register(database, action, out);
                 } else if (action.getFeature().equals("search")
-                        && livePage.equals(PageMovies.getInstance())) {
-                    //PageMovies.getInstance().search();
+                        && database.getLivePage().equals(PageMovies.getInstance())) {
+                    PageMovies.getInstance().search(action, out);
                 } else if (action.getFeature().equals("filter")
-                        && livePage.equals(PageMovies.getInstance())) {
-                    //PageMovies.getInstance().filter();
+                        && database.getLivePage().equals(PageMovies.getInstance())) {
+                    PageMovies.getInstance().filter(action, out);
                 } else if (action.getFeature().equals("purchase")
-                        && livePage.equals(PageSeeDetails.getInstance())) {
+                        && database.getLivePage().equals(PageSeeDetails.getInstance())) {
                     //PageSeeDetails.getInstance().purchase();
                 } else if (action.getFeature().equals("watch")
-                        && livePage.equals(PageSeeDetails.getInstance())) {
+                        && database.getLivePage().equals(PageSeeDetails.getInstance())) {
                     //PageSeeDetails.getInstance().watch();
                 } else if (action.getFeature().equals("like")
-                        && livePage.equals(PageSeeDetails.getInstance())) {
+                        && database.getLivePage().equals(PageSeeDetails.getInstance())) {
                     //PageSeeDetails.getInstance().like();
                 } else if (action.getFeature().equals("rate")
-                        && livePage.equals(PageSeeDetails.getInstance())) {
+                        && database.getLivePage().equals(PageSeeDetails.getInstance())) {
                     //PageSeeDetails.getInstance().rate();
                 } else if (action.getFeature().equals("buy tokens")
-                        && livePage.equals(PageUpgrades.getInstance())) {
+                        && database.getLivePage().equals(PageUpgrades.getInstance())) {
                     //PageUpgrades.getInstance().buyTokens();
                 } else if (action.getFeature().equals("buy premium account")
-                        && livePage.equals(PageUpgrades.getInstance())) {
+                        && database.getLivePage().equals(PageUpgrades.getInstance())) {
                     //PageUpgrades.getInstance().buyPremiumAccount();
                 } else {
                     out.add(error);

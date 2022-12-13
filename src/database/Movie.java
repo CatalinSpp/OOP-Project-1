@@ -19,6 +19,18 @@ public class Movie {
         numRatings = 0;
     }
 
+    public Movie(Movie duplicate) {
+        name = duplicate.getName();
+        year = duplicate.getYear();
+        duration = duplicate.getDuration();
+        genres = duplicate.getGenres();
+        actors = duplicate.getActors();
+        countriesBanned = duplicate.getCountriesBanned();
+        numLikes = duplicate.getNumLikes();
+        rating = duplicate.getRating();
+        numRatings = duplicate.getNumRatings();
+    }
+
     public final String getName() {
         return name;
     }

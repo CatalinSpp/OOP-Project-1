@@ -1,6 +1,14 @@
 package pages;
 
+import database.Database;
+import database.Movie;
+import database.User;
+
+import java.util.ArrayList;
+
 public class PageUpgrades implements Page {
+    private User userOnPage;
+    private ArrayList<Movie> displayedMovieListOnPage;
     private static PageUpgrades instance = null;
 
     private PageUpgrades() {
@@ -15,7 +23,8 @@ public class PageUpgrades implements Page {
     }
 
     @Override
-    public void navigateToHere() {
-
+    public void navigateToHere(final Database database) {
+        userOnPage = database.getLoggedUser();
+        displayedMovieListOnPage = database.getDisplayedMovieList();
     }
 }
