@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.ArrayList;
 
-public class User {
+public final class User {
     private Credentials credentials;
     private int tokensCount;
     private int numFreePremiumMovies;
@@ -23,7 +23,7 @@ public class User {
         moviesAvailableInHisCountry = new ArrayList<>();
     }
 
-    public User(User duplicate) {
+    public User(final User duplicate) {
         credentials = new Credentials(duplicate.getCredentials());
         tokensCount = duplicate.getTokensCount();
         numFreePremiumMovies = duplicate.getNumFreePremiumMovies();
@@ -34,11 +34,11 @@ public class User {
         moviesAvailableInHisCountry = new ArrayList<>();
     }
 
-    public final Credentials getCredentials() {
+    public Credentials getCredentials() {
         return credentials;
     }
 
-    public final void setCredentials(final Credentials credentials) {
+    public void setCredentials(final Credentials credentials) {
         this.credentials = credentials;
     }
 
@@ -46,7 +46,7 @@ public class User {
         return tokensCount;
     }
 
-    public void setTokensCount(int tokensCount) {
+    public void setTokensCount(final int tokensCount) {
         this.tokensCount = tokensCount;
     }
 
@@ -54,7 +54,7 @@ public class User {
         return numFreePremiumMovies;
     }
 
-    public void setNumFreePremiumMovies(int numFreePremiumMovies) {
+    public void setNumFreePremiumMovies(final int numFreePremiumMovies) {
         this.numFreePremiumMovies = numFreePremiumMovies;
     }
 
@@ -62,7 +62,7 @@ public class User {
         return purchasedMovies;
     }
 
-    public void setPurchasedMovies(ArrayList<Movie> purchasedMovies) {
+    public void setPurchasedMovies(final ArrayList<Movie> purchasedMovies) {
         this.purchasedMovies = purchasedMovies;
     }
 
@@ -70,7 +70,7 @@ public class User {
         return watchedMovies;
     }
 
-    public void setWatchedMovies(ArrayList<Movie> watchedMovies) {
+    public void setWatchedMovies(final ArrayList<Movie> watchedMovies) {
         this.watchedMovies = watchedMovies;
     }
 
@@ -78,7 +78,7 @@ public class User {
         return likedMovies;
     }
 
-    public void setLikedMovies(ArrayList<Movie> likedMovies) {
+    public void setLikedMovies(final ArrayList<Movie> likedMovies) {
         this.likedMovies = likedMovies;
     }
 
@@ -86,7 +86,7 @@ public class User {
         return ratedMovies;
     }
 
-    public void setRatedMovies(ArrayList<Movie> ratedMovies) {
+    public void setRatedMovies(final ArrayList<Movie> ratedMovies) {
         this.ratedMovies = ratedMovies;
     }
 
@@ -96,7 +96,8 @@ public class User {
     }
 
     @JsonIgnore
-    public void setMoviesAvailableInHisCountry(ArrayList<Movie> moviesAvailableInHisCountry) {
+    public void setMoviesAvailableInHisCountry(final ArrayList<Movie> moviesAvailableInHisCountry) {
         this.moviesAvailableInHisCountry = moviesAvailableInHisCountry;
     }
+
 }

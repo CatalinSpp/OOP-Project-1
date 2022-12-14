@@ -1,16 +1,13 @@
 package pages;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import database.*;
-
-import java.util.ArrayList;
 
 import static pages.Homepage.success;
 import static pages.PageLogin.loginError;
 
-public class PageRegister implements Page {
+// register page
+public final class PageRegister implements Page {
     private static PageRegister instance = null;
 
     private PageRegister() {
@@ -27,11 +24,12 @@ public class PageRegister implements Page {
     }
 
     @Override
-    public void navigateToHere(Database database) {
+    public void navigateToHere(final Database database) {
         database.setLoggedUser(null);
         database.getDisplayedMovieList().clear();
     }
 
+    /** register function */
     public void register(final Database database, final Action action, final ArrayNode out) {
         infiniteLoop:
         while (true) {

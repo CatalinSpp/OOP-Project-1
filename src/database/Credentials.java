@@ -10,7 +10,7 @@ public final class Credentials {
     public Credentials() {
     }
 
-    public Credentials(Credentials duplicate) {
+    public Credentials(final Credentials duplicate) {
         name = duplicate.getName();
         password = duplicate.getPassword();
         accountType = duplicate.getAccountType();

@@ -1,13 +1,9 @@
 package pages;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import database.Database;
-import database.Movie;
-import database.User;
 
-import java.util.ArrayList;
-
-public class PageLogout implements Page {
+// logout page (unauthenticated page)
+public final class PageLogout implements Page {
     private static PageLogout instance = null;
 
     private PageLogout() {

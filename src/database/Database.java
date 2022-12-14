@@ -5,7 +5,7 @@ import pages.PageLogout;
 
 import java.util.ArrayList;
 
-
+// database of platform & input class
 public final class Database {
     private ArrayList<User> users;
     private ArrayList<Movie> movies;
@@ -51,7 +51,7 @@ public final class Database {
         return loggedUser;
     }
 
-    public void setLoggedUser(User loggedUser) {
+    public void setLoggedUser(final User loggedUser) {
         this.loggedUser = loggedUser;
     }
 
@@ -59,7 +59,7 @@ public final class Database {
         return displayedMovieList;
     }
 
-    public void setDisplayedMovieList(ArrayList<Movie> displayedMovieList) {
+    public void setDisplayedMovieList(final ArrayList<Movie> displayedMovieList) {
         this.displayedMovieList = displayedMovieList;
     }
 
@@ -67,7 +67,7 @@ public final class Database {
         return livePage;
     }
 
-    public void setLivePage(Page livePage) {
+    public void setLivePage(final Page livePage) {
         this.livePage = livePage;
     }
 

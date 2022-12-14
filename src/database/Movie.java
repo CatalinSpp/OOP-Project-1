@@ -1,8 +1,10 @@
 package database;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 
-public class Movie {
+public final class Movie {
     private String name;
     private int year;
     private int duration;
@@ -12,14 +14,16 @@ public class Movie {
     private int numLikes;
     private double rating;
     private int numRatings;
+    private double sumRatings;
 
     public Movie() {
         numLikes = 0;
         rating = 0;
         numRatings = 0;
+        sumRatings = 0.00;
     }
 
-    public Movie(Movie duplicate) {
+    public Movie(final Movie duplicate) {
         name = duplicate.getName();
         year = duplicate.getYear();
         duration = duplicate.getDuration();
@@ -29,53 +33,54 @@ public class Movie {
         numLikes = duplicate.getNumLikes();
         rating = duplicate.getRating();
         numRatings = duplicate.getNumRatings();
+        sumRatings = 0;
     }
 
-    public final String getName() {
+    public String getName() {
         return name;
     }
 
-    public final void setName(final String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
-    public final int getYear() {
+    public int getYear() {
         return year;
     }
 
-    public final void setYear(final int year) {
+    public void setYear(final int year) {
         this.year = year;
     }
 
-    public final int getDuration() {
+    public int getDuration() {
         return duration;
     }
 
-    public final void setDuration(final int duration) {
+    public void setDuration(final int duration) {
         this.duration = duration;
     }
 
-    public final ArrayList<String> getGenres() {
+    public ArrayList<String> getGenres() {
         return genres;
     }
 
-    public final void setGenres(final ArrayList<String> genres) {
+    public void setGenres(final ArrayList<String> genres) {
         this.genres = genres;
     }
 
-    public final ArrayList<String> getActors() {
+    public ArrayList<String> getActors() {
         return actors;
     }
 
-    public final void setActors(final ArrayList<String> actors) {
+    public void setActors(final ArrayList<String> actors) {
         this.actors = actors;
     }
 
-    public final ArrayList<String> getCountriesBanned() {
+    public ArrayList<String> getCountriesBanned() {
         return countriesBanned;
     }
 
-    public final void setCountriesBanned(final ArrayList<String> countriesBanned) {
+    public void setCountriesBanned(final ArrayList<String> countriesBanned) {
         this.countriesBanned = countriesBanned;
     }
 
@@ -83,7 +88,7 @@ public class Movie {
         return numLikes;
     }
 
-    public void setNumLikes(int numLikes) {
+    public void setNumLikes(final int numLikes) {
         this.numLikes = numLikes;
     }
 
@@ -91,7 +96,7 @@ public class Movie {
         return rating;
     }
 
-    public void setRating(double rating) {
+    public void setRating(final double rating) {
         this.rating = rating;
     }
 
@@ -99,7 +104,17 @@ public class Movie {
         return numRatings;
     }
 
-    public void setNumRatings(int numRatings) {
+    public void setNumRatings(final int numRatings) {
         this.numRatings = numRatings;
+    }
+
+    @JsonIgnore
+    public double getSumRatings() {
+        return sumRatings;
+    }
+
+    @JsonIgnore
+    public void setSumRatings(final double sumRatings) {
+        this.sumRatings = sumRatings;
     }
 }

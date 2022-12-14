@@ -9,10 +9,10 @@ import database.Movie;
 import database.User;
 
 import java.util.ArrayList;
-
 import static pages.Homepage.success;
 
-public class PageLogin implements Page {
+// login page
+public final class PageLogin implements Page {
     private static PageLogin instance = null;
 
     private PageLogin() {
@@ -32,6 +32,7 @@ public class PageLogin implements Page {
         database.getDisplayedMovieList().clear();
     }
 
+    /** login function */
     public void login(final Database database, final Action action, final ArrayNode out) {
         infiniteLoop:
         while (true) {
@@ -55,6 +56,7 @@ public class PageLogin implements Page {
         }
     }
 
+    /** function that put out the error for login */
     static void loginError(final Database database, final ArrayNode out) {
         ObjectMapper objectMapper = new ObjectMapper();
         database.setLivePage(PageLogout.getInstance());
@@ -65,7 +67,8 @@ public class PageLogin implements Page {
         out.add(error);
     }
 
-    static void enterAcc(Database database) {
+    /** function that logged user into account */
+    static void enterAcc(final Database database) {
         for (int i = 0; i < database.getMovies().size(); i++) {
             if (!database.getMovies().get(i).getCountriesBanned()
                     .contains(database.getLoggedUser().getCredentials().getCountry())) {

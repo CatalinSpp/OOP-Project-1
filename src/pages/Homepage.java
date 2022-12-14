@@ -9,7 +9,8 @@ import database.User;
 
 import java.util.ArrayList;
 
-public class Homepage implements Page {
+// authenticated page
+public final class Homepage implements Page {
     private User userOnPage;
     private ArrayList<Movie> displayedMovieListOnPage;
     private static Homepage instance = null;
@@ -31,7 +32,7 @@ public class Homepage implements Page {
         displayedMovieListOnPage = database.getDisplayedMovieList();
     }
 
-    static void success(Database database, ArrayNode out) {
+    static void success(final Database database, final ArrayNode out) {
         ObjectMapper objectMapper = new ObjectMapper();
         ObjectNode valid = objectMapper.createObjectNode();
         valid.putPOJO("error", null);
